@@ -1,4 +1,12 @@
 # terraform providers
 providers.tf
+
+# Terraform files
 .terraform/
 .terraform.lock.hcl
+
+# Terraform state
+*.tfstate
+*.tfstate.backup
+
+
