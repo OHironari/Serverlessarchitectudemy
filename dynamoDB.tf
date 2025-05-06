@@ -1,9 +1,8 @@
 # ===========
 # Define Dynamo DB 
 # ===========
-resource "aws_dynamodb_table" "items" {
-  name         = "ItemsTable"
-  billing_mode = "PAY_PER_REQUEST"
+resource "aws_dynamodb_table" "users" {
+  name         = "users"
   hash_key     = "id"
 
   attribute {
