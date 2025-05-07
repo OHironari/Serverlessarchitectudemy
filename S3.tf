@@ -8,29 +8,29 @@ resource "aws_s3_bucket" "s3_lambda_resource_bucket" {
 resource "aws_s3_object" "users_post_function" {
   bucket = aws_s3_bucket.s3_lambda_resource_bucket.id
   key    = "users_post_function.zip"         # S3上のパス
-  source = "functions/users_post_function.py.zip"          # ローカルファイルのパス
-  etag   = filemd5("functions/users_post_function.py.zip") # ファイルの変更検知に必要
+  source = "functions/users_post_function.zip"          # ローカルファイルのパス
+  etag   = filemd5("functions/users_post_function.zip") # ファイルの変更検知に必要
 }
 
 resource "aws_s3_object" "users_get_function" {
   bucket = aws_s3_bucket.s3_lambda_resource_bucket.id
   key    = "users_get_function.zip"         # S3上のパス
-  source = "functions/users_get_function.py.zip"          # ローカルファイルのパス
-  etag   = filemd5("functions/users_get_function.py.zip") # ファイルの変更検知に必要
+  source = "functions/users_get_function.zip"          # ローカルファイルのパス
+  etag   = filemd5("functions/users_get_function.zip") # ファイルの変更検知に必要
 }
 
 resource "aws_s3_object" "users_put_function" {
   bucket = aws_s3_bucket.s3_lambda_resource_bucket.id
   key    = "users_put_function.zip"         # S3上のパス
-  source = "functions/users_put_function.py.zip"          # ローカルファイルのパス
-  etag   = filemd5("functions/users_put_function.py.zip") # ファイルの変更検知に必要
+  source = "functions/users_put_function.zip"          # ローカルファイルのパス
+  etag   = filemd5("functions/users_put_function.zip") # ファイルの変更検知に必要
 }
 
 resource "aws_s3_object" "users_delete_function" {
   bucket = aws_s3_bucket.s3_lambda_resource_bucket.id
   key    = "users_delete_function.zip"         # S3上のパス
-  source = "functions/users_delete_function.py.zip"          # ローカルファイルのパス
-  etag   = filemd5("functions/users_delete_function.py.zip") # ファイルの変更検知に必要
+  source = "functions/users_delete_function.zip"          # ローカルファイルのパス
+  etag   = filemd5("functions/users_delete_function.zip") # ファイルの変更検知に必要
 }
 
 resource "aws_s3_bucket_versioning" "versioning" {

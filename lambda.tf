@@ -11,7 +11,7 @@ resource "aws_lambda_function" "users_post_function" {
   s3_key = aws_s3_object.users_post_function.key
   function_name = "users-post-function"
   role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "users_post_function.handler"
+  handler       = "users_post_function.lambda_handler"
   runtime = "python3.9"
 
   environment {
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "users_get_function" {
   s3_key = aws_s3_object.users_get_function.key
   function_name = "users-get-function"
   role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "users_get_function.handler"
+  handler       = "users_get_function.lambda_handler"
   runtime = "python3.9"
 
   environment {
@@ -45,7 +45,7 @@ resource "aws_lambda_function" "users_put_function" {
   s3_key = aws_s3_object.users_put_function.key
   function_name = "users-put-function"
   role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "users_put_function.handler"
+  handler       = "users_put_function.lambda_handler"
   runtime = "python3.9"
 
   environment {
@@ -62,7 +62,7 @@ resource "aws_lambda_function" "users_delete_function" {
   s3_key = aws_s3_object.users_delete_function.key
   function_name = "users-delete-function"
   role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "users_delete_function.handler"
+  handler       = "users_delete_function.lambda_handler"
   runtime = "python3.9"
 
   environment {
@@ -70,4 +70,36 @@ resource "aws_lambda_function" "users_delete_function" {
       foo = "bar"
     }
   }
+}
+
+resource "aws_lambda_permission" "allow_apigw_post" {
+  statement_id  = "AllowExecutionFromAPIGatewayPost"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.users_post_function.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.users_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "allow_apigw_get" {
+  statement_id  = "AllowExecutionFromAPIGatewayGet"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.users_get_function.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.users_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "allow_apigw_put" {
+  statement_id  = "AllowExecutionFromAPIGatewayPut"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.users_put_function.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.users_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "allow_apigw_delete" {
+  statement_id  = "AllowExecutionFromAPIGatewayDelete"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.users_delete_function.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.users_api.execution_arn}/*/*"
 }
