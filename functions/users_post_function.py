@@ -1,21 +1,12 @@
 import boto3
- 
+import json
+
 dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('users')
+ 
+def post_users(requestJSON):
+    table.put_item(Item={'id': requestJSON['id'], 'name': requestJSON['name'], 'age': requestJSON['age'], 'address': requestJSON['address'], 'tel': requestJSON['tel']})
 
-#リクエストパラメータでIDが指定される場合、該当IDのユーザ情報を取得して返す
-def get_user(id):
-    response = table.get_item(
-            Key={
-                 'id': id
-            }
-        )
-    return response['Item']
-
-#リクエストパラメータでIDが指定されない場合、全ユーザ情報を取得して返す
-def get_users():
-    response = table.scan()
-    return response['Items']
-         
 def lambda_handler(event, context):
-    return get_users() if event['id'] == '' else get_user(event['id'])
+    requestJSON = json.loads(event['body'])
+    post_users(requestJSON)
