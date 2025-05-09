@@ -19,6 +19,8 @@ resource "aws_lambda_function" "users_post_function" {
       foo = "bar"
     }
   }
+
+  depends_on = [ aws_cloudwatch_log_group.post_function_logs ]
 }
 
 resource "aws_lambda_function" "users_get_function" {
@@ -36,6 +38,8 @@ resource "aws_lambda_function" "users_get_function" {
       foo = "bar"
     }
   }
+
+  depends_on = [ aws_cloudwatch_log_group.get_function_logs ]
 }
 
 resource "aws_lambda_function" "users_put_function" {
@@ -53,6 +57,8 @@ resource "aws_lambda_function" "users_put_function" {
       foo = "bar"
     }
   }
+
+  depends_on = [ aws_cloudwatch_log_group.put_function_logs ]
 }
 
 resource "aws_lambda_function" "users_delete_function" {
@@ -70,6 +76,8 @@ resource "aws_lambda_function" "users_delete_function" {
       foo = "bar"
     }
   }
+
+  depends_on = [ aws_cloudwatch_log_group.delete_function_logs ]
 }
 
 resource "aws_lambda_permission" "allow_apigw_post" {
