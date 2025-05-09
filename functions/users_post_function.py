@@ -1,5 +1,6 @@
 import boto3
 import json
+import logging
 
 dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('users')
@@ -10,3 +11,4 @@ def post_users(requestJSON):
 def lambda_handler(event, context):
     requestJSON = json.loads(event['body'])
     post_users(requestJSON)
+    return "success"

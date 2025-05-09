@@ -14,3 +14,18 @@ variable "region" {
 }
 
 
+variable "domain" {
+  type= string
+  description = "This defines the name of this domain name"
+}
+
+variable "api_domain" {
+  type= string
+  description = "This defines the name of this API domain name"
+}
+
+
+variable "zone_id" {
+  type= string
+  description = "This defines the name of zone id"
+}

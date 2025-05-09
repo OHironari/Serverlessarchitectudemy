@@ -12,6 +12,29 @@ resource "aws_api_gateway_resource" "users" {
   path_part   = "users"
 }
 
+resource "aws_api_gateway_domain_name" "custom_domain" {
+  domain_name = "${var.api_domain}"
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+  regional_certificate_arn = aws_acm_certificate.apigw_cert.arn
+  depends_on = [
+    aws_acm_certificate_validation.apigw_cert_valid
+  ]
+}
+
+resource "aws_api_gateway_base_path_mapping" "api_mapping" {
+  domain_name = aws_api_gateway_domain_name.custom_domain.domain_name
+  api_id = aws_api_gateway_rest_api.users_api.id
+  stage_name  = aws_api_gateway_stage.prod.stage_name
+  base_path = aws_api_gateway_stage.prod.stage_name
+  depends_on = [
+    aws_api_gateway_deployment.all,
+    aws_api_gateway_stage.prod
+  ]
+}
+
 resource "aws_api_gateway_deployment" "all" {
   depends_on = [
     aws_api_gateway_integration.lambda_post_users,
@@ -19,7 +42,7 @@ resource "aws_api_gateway_deployment" "all" {
     aws_api_gateway_integration.lambda_put_users,
     aws_api_gateway_integration.lambda_delete_users,
   ]
-
+  
   rest_api_id = aws_api_gateway_rest_api.users_api.id
 }
 
@@ -43,6 +66,7 @@ resource "aws_api_gateway_stage" "prod" {
     })
   }
 }
+
 resource "aws_api_gateway_account" "api_account" {
   cloudwatch_role_arn = aws_iam_role.api_gw_cloudwatch_role.arn
 }
