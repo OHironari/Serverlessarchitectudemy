@@ -115,7 +115,7 @@ resource "aws_api_gateway_integration" "lambda_get_users" {
   resource_id = aws_api_gateway_resource.users.id
   http_method = aws_api_gateway_method.get_users.http_method
 
-  integration_http_method = "GET"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_get_function.invoke_arn
 
@@ -145,7 +145,7 @@ resource "aws_api_gateway_integration" "lambda_put_users" {
   resource_id = aws_api_gateway_resource.users.id
   http_method = aws_api_gateway_method.put_users.http_method
 
-  integration_http_method = "PUT"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_put_function.invoke_arn
 
@@ -176,7 +176,7 @@ resource "aws_api_gateway_integration" "lambda_delete_users" {
   resource_id = aws_api_gateway_resource.users.id
   http_method = aws_api_gateway_method.delete_users.http_method
 
-  integration_http_method = "DELETE"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_delete_function.invoke_arn
 

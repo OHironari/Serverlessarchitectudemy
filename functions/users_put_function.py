@@ -4,7 +4,7 @@ import json
 dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('users')
  
-def post_users(requestJSON):
+def post_users(requestJSON,user_id):
     table.update_item(
         Key={
             'id': requestJSON['id']
@@ -20,7 +20,17 @@ def post_users(requestJSON):
             ':newTel': requestJSON['tel']
         },
     )
+    response = table.get_item(Key={'id': user_id})
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(response.get('Item', {}))
+    }
 
 def lambda_handler(event, context):
     requestJSON = json.loads(event['body'])
-    post_users(requestJSON)
+    query = event.get('queryStringParameters') or {}
+    user_id = query.get('id')
+    post_users(requestJSON,user_id)

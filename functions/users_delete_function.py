@@ -1,4 +1,5 @@
 import boto3
+import json
  
 dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('users')
@@ -10,6 +11,13 @@ def delete_user(id):
             'id': id
         }
     )
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps({"message": "Success!"})
+    }
 
 #リクエストパラメータでIDが指定されない場合、テーブルを削除する
 def delete_users():
