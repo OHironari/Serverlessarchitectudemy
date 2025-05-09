@@ -11,4 +11,10 @@ def post_users(requestJSON):
 def lambda_handler(event, context):
     requestJSON = json.loads(event['body'])
     post_users(requestJSON)
-    return "success"
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps({"message": "Success!"})
+    }

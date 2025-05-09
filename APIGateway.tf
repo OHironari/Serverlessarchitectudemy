@@ -87,16 +87,16 @@ resource "aws_api_gateway_integration" "lambda_post_users" {
   http_method = aws_api_gateway_method.post_users.http_method
 
   integration_http_method = "POST"
-  type                    = "AWS"
+  type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_post_function.invoke_arn
 
-request_templates = {
-  "application/json" = <<EOF
-{
-  "body": "$util.escapeJavaScript($input.body)"
-}
-EOF
-}
+# request_templates = {
+#   "application/json" = <<EOF
+# {
+#   "body": "$util.escapeJavaScript($input.body)"
+# }
+# EOF
+# }
   depends_on = [ aws_lambda_function.users_post_function ]
 }
 
@@ -116,16 +116,16 @@ resource "aws_api_gateway_integration" "lambda_get_users" {
   http_method = aws_api_gateway_method.get_users.http_method
 
   integration_http_method = "GET"
-  type                    = "AWS"
+  type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_get_function.invoke_arn
 
-  request_templates = {
-    "application/json" = <<EOF
-{
-    "id" : "$input.params('id')"
-}
-EOF
-}
+#   request_templates = {
+#     "application/json" = <<EOF
+# {
+#     "id" : "$input.params('id')"
+# }
+# EOF
+# }
 
   depends_on = [ aws_lambda_function.users_get_function ]
 }
@@ -146,16 +146,16 @@ resource "aws_api_gateway_integration" "lambda_put_users" {
   http_method = aws_api_gateway_method.put_users.http_method
 
   integration_http_method = "PUT"
-  type                    = "AWS"
+  type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_put_function.invoke_arn
 
-  request_templates = {
-    "application/json" = <<EOF
-{
-    "body" : "$util.escapeJavaScript($input.body)"
-}
-EOF
-  }
+#   request_templates = {
+#     "application/json" = <<EOF
+# {
+#     "body" : "$util.escapeJavaScript($input.body)"
+# }
+# EOF
+#   }
 
   depends_on = [ aws_lambda_function.users_put_function ]
 }
@@ -177,16 +177,16 @@ resource "aws_api_gateway_integration" "lambda_delete_users" {
   http_method = aws_api_gateway_method.delete_users.http_method
 
   integration_http_method = "DELETE"
-  type                    = "AWS"
+  type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.users_delete_function.invoke_arn
 
-  request_templates = {
-    "application/json" = <<EOF
-{
-    "id" : "$input.params('id')"
-}
-EOF
-  }
+#   request_templates = {
+#     "application/json" = <<EOF
+# {
+#     "id" : "$input.params('id')"
+# }
+# EOF
+#   }
 
   depends_on = [ aws_lambda_function.users_delete_function ]
 }

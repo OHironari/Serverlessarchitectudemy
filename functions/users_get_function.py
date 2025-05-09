@@ -10,12 +10,24 @@ def get_user(id):
                  'id': id
             }
         )
-    return response['Item']
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": response['Item']
+    }
 
 #リクエストパラメータでIDが指定されない場合、全ユーザ情報を取得して返す
 def get_users():
     response = table.scan()
-    return response['Items']
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": response['Items']
+    }
          
 def lambda_handler(event, context):
     return get_users() if event['id'] == '' else get_user(event['id'])
