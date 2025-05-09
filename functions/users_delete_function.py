@@ -1,27 +1,40 @@
 import boto3
 import json
- 
-dynamodb = boto3.resource('dynamodb')
-table    = dynamodb.Table('users')
 
-#リクエストパラメータでIDが指定される場合、該当IDのレコードを削除する
-def delete_user(id):
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('users')
+
+# 単一レコード削除
+def delete_user(user_id):
     table.delete_item(
         Key={
-            'id': id
+            'id': user_id
         }
     )
     return {
         "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": json.dumps({"message": "Success!"})
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps({"message": f"User {user_id} deleted successfully."})
     }
 
-#リクエストパラメータでIDが指定されない場合、テーブルを削除する
+# 全レコード削除（テーブル自体は削除しない）
 def delete_users():
-    response = table.delete()
-         
+    scan = table.scan()
+    with table.batch_writer() as batch:
+        for item in scan.get('Items', []):
+            batch.delete_item(Key={'id': item['id']})
+
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps({"message": "All users deleted successfully."})
+    }
+
 def lambda_handler(event, context):
-    return delete_users() if event['id'] == '' else delete_user(event['id'])
+    query = event.get('queryStringParameters') or {}
+    user_id = query.get('id')
+
+    if user_id:
+        return delete_user(user_id)
+    else:
+        return delete_users()
